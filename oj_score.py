@@ -105,7 +105,7 @@ class ContestScore:
         return dataframe
 
 
-test = ContestScore()
-test.load_data(rank_path='./Contest-Rank.xlsx', submission_path='./Contest_submission.csv', problem_path='./problem.csv')
-test.contest_score.head()
-test.save('Result.xlsx')
+# test = ContestScore()
+# test.load_data(rank_path='./Contest-Rank.xlsx', submission_path='./Contest_submission.csv', problem_path='./problem.csv')
+# test.contest_score.head()
+# test.save('Result.xlsx')
