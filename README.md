@@ -21,4 +21,8 @@ test.save('Result.xlsx')
 # sort results
 test.sort(by=['AC', '通过用例数', 'Total Time'], ascending=[False, False, True])
 ```
+如果没有problem表，可以用 set_problems 手动设置问题名和对应id
 
+```python
+test.set_problems([name1, name2, ...], [id1, id2, ...])
+```
