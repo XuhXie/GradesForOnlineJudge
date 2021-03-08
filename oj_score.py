@@ -31,24 +31,24 @@ class ContestScore:
         self.submission_df = ContestScore.read_dataframe(submission_path)
         self.rank_path = rank_path
         self.submission_path = submission_path
-
-        # get problem_names and problem_ids
-        self.get_problems(problem_path)
-
         rank_columns = self.ranks_df.columns.tolist()
         self.problem_names = rank_columns[6:]
 
         # process ranks
         drop_data = ['User ID', 'Real Name', 'Total Submission'] + self.problem_names
         self.contest_score = self.ranks_df.drop(axis=1, columns=drop_data)
+
         # calculate max cases
         self.contest_score['通过用例数'] = self.contest_score.apply(self.gen_max_cases, axis=1)
-        # calculate max cases for certain problems
-        self.gen_all_cases = False
-        for index, p_id in enumerate(self.problem_ids):
-            self.target_problem = p_id
-            p_name = self.problem_names[index]
-            self.contest_score[p_name] = self.contest_score.apply(self.gen_max_cases_problem, axis=1)
+
+        # get problem_names and problem_ids
+        # calculate problem cases
+        if problem_path:
+            self.get_problems(problem_path)
+            self.calculate()
+        else:
+            print("Please Set Problem names and ids by set_problems(names, ids) function")
+
         # sort scores
         self.sort()
 
@@ -61,6 +61,18 @@ class ContestScore:
     def gen_max_cases(self, df):
         self.gen_all_cases = True
         return self.gen_max_cases_(df)
+
+    def set_problems(self, problem_names, problem_ids):
+        self.problem_names = problem_names
+        self.problem_ids = problem_ids
+
+    def calculate(self):
+        # calculate max cases for certain problems
+        self.gen_all_cases = False
+        for index, p_id in enumerate(self.problem_ids):
+            self.target_problem = p_id
+            p_name = self.problem_names[index]
+            self.contest_score[p_name] = self.contest_score.apply(self.gen_max_cases_problem, axis=1)
 
     def gen_max_cases_problem(self, df):
         self.gen_all_cases = False
@@ -103,7 +115,6 @@ class ContestScore:
         else:
             FileTypeError(filetype)
         return dataframe
-
 
 # test = ContestScore()
 # test.load_data(rank_path='./Contest-Rank.xlsx', submission_path='./Contest_submission.csv', problem_path='./problem.csv')
