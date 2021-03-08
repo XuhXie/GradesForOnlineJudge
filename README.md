@@ -12,17 +12,24 @@ Grades Statistics for Online Judge
 ```python
 test = ContestScore()
 
-# load data and process data
+# load data and calculate scores , ranks automatically
 test.load_data(rank_path='./Contest-Rank.xlsx', submission_path='./Contest_submission.csv', problem_path='./problem.csv')
-# retun a pandas DataFrame
+
+# retun the result by a pandas DataFrame
 test.contest_score
-# Save as excel
+
+# Save result as excel
 test.save('Result.xlsx')
-# sort results
-test.sort(by=['AC', '通过用例数', 'Total Time'], ascending=[False, False, True])
+
 ```
+
 如果没有problem表，可以用 set_problems 手动设置问题名和对应id
 
 ```python
+
 test.set_problems([name1, name2, ...], [id1, id2, ...])
+test.calculate()  # calculate result manually
+test.sort() # default setting  sort(by=['AC', '通过用例数', 'Total Time'], ascending=[False, False, True])
+test.save('Result.xlsx') 
+
 ```
